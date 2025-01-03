@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="flex justify-center items-center min-h-screen bg-gray-50">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Welcome</h1>
+        <form id="auth-form" method="post" class="space-y-5">
+            <!-- Username -->
+            <div>
+                <input 
+                    type="text" 
+                    name="username" 
+                    placeholder="Username" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                >
+            </div>
+
+            <!-- Password -->
+            <div>
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Password" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                >
+            </div>
+
+            <!-- Additional Fields for Registration -->
+            <div id="register-fields" class="hidden">
+                <!-- Email -->
+                <div>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        placeholder="Email" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
+                    >
+                </div>
+
+                <!-- School -->
+                <div>
+                    <input 
+                        type="text" 
+                        name="school" 
+                        placeholder="School" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                </div>
+
+                <!-- Department -->
+                <div>
+                    <input 
+                        type="text" 
+                        name="department" 
+                        placeholder="Department" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                </div>
+
+                <!-- About -->
+                <div>
+                    <textarea 
+                        name="about" 
+                        placeholder="Tell us about yourself" 
+                        rows="3"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button 
+                    type="submit" 
+                    id="submit-button" 
+                    class="w-full px-4 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    Login
+                </button>
+            </div>
+            <div class="mt-4 flex justify-between">
+            <button 
+                type="button" 
+                class="w-1/2 px-4 py-2 border border-blue-500 text-blue-500 font-semibold rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onclick="toggleForm('register')"
+            >
+                Register
+            </button>
+
+            <button 
+                type="button" 
+                class="w-1/2 px-4 py-2 border border-blue-500 text-blue-500 font-semibold rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onclick="toggleForm('login')"
+            >
+                Login
+            </button>
+            
+        </div>
+        </form>
+<p class="text-red-400">{{error}}</p>
+        <!-- Toggle Actions -->
+        
+    </div>
+</div>
+
+<script>
+    function toggleForm(action) {
+        const form = document.getElementById('auth-form');
+        const registerFields = document.getElementById('register-fields');
+        const submitButton = document.getElementById('submit-button');
+
+        if (action === 'login') {
+            form.action = "{{ url_for('auth.login') }}";
+            registerFields.classList.add('hidden'); // Hide registration fields
+            submitButton.textContent = 'Login'; // Update button text
+            form.method = 'post';
+            
+        } else if (action === 'register') {
+            form.action = "{{ url_for('auth.register') }}";
+            registerFields.classList.remove('hidden'); // Show registration fields
+            submitButton.textContent = 'Register'; // Update button text
+            form.method = 'post';
+            
+        }
+    }
+
+    // // Set default to 'login' mode
+    toggleForm('login');
+</script>
+{% endblock %}
